@@ -76,7 +76,19 @@ const selectAllJogo = async function(){
 
 //Função para buscar no banco de dados um jogo pelo ID
 const selectByIdJogo = async function(){
+  try{
+    let sql = 'select * from tbl_jogo order by id desc'
 
+    let result = await prisma.$queryRawUnsafe(sql)
+
+    if(result)
+      return result
+    else 
+    return false
+
+  } catch (error) {
+    return false
+  }
 }
 
 module.exports = {

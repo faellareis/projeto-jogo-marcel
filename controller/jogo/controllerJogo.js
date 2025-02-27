@@ -61,7 +61,7 @@ const listarJogo = async function(){
     //Chamo a função para retornar os dados do jogo
         let resultJogo = await jogoDAO.selectAllJogo()
 
-        if(resultJogo != false){
+        if(resultJogo != false || typeof(resultJogo) == 'object'){
         if(resultJogo.length > 0){
 
             //Cria um objeto do tipo JSON para retornar a lista de jogos 
@@ -84,7 +84,15 @@ const listarJogo = async function(){
 
 //Função para buscar um jogo
 const buscarJogo = async function(){
+    try{
+        let dadosJogos = {}
 
+        let resultJogo = await jogoDAO.selectByIdJogo
+
+        
+    } catch (error){
+        return false
+    }
 }
 
 module.exports = {
