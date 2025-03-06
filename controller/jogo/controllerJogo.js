@@ -49,8 +49,34 @@ const atualizarJogo = async function(){
 }
 
 //Função para excluir um jogo
-const excluirJogo = async function(){
+const excluirJogo = async function(id) {
+    try {
+  
+      // Verifica se o ID foi passado corretamente
+      if (id == undefined || id == '' || isNaN(id)) {
+        return MESSAGE.ERROR_REQUIRED_FILES // 400 
+      }
+      if(id){
+        let verificar = await jogoDAO.selectByIdJogo(id)
+        let resultJogo = await jogoDAO.deleteJogo(id)
 
+        if(verificar != false || typeof(verificar) == 'object'){
+            if(verificar.length > 0){
+                if(resultJogo){
+                    return MESSAGE.SUCCESS_DELETED_ITEM
+                }else {
+                    return MESSAGE.ERROR_NOT_DELETE
+                }
+            }else {
+                return MESSAGE.ERROR_NOT_DELETE
+            }
+          }else {
+            return MESSAGE.ERROR_INTERNAL_SERVER_MODEL
+          }
+        } 
+    }catch (error){
+        return MESSAGE.ERROR_INTERNAL_SERVER_CONTROLLER
+    }
 }
 
 //Função para retornar todos os jogos
@@ -83,15 +109,29 @@ const listarJogo = async function(){
 }
 
 //Função para buscar um jogo
-const buscarJogo = async function(){
-    try{
-        let dadosJogos = {}
+const buscarJogo = async function(id) { //recebe ID
+    try {
+        let dadosJogo = {}
 
-        let resultJogo = await jogoDAO.selectByIdJogo
+        //verifica se o ID foi passado correto
+        if (id == undefined || id == '' || isNaN(id)) {
+            return MESSAGE.ERROR_REQUIRED_FILES //400
+        }
 
-        
-    } catch (error){
-        return false
+        let resultJogo = await jogoDAO.selectByIdJogo(id)
+
+        if (resultJogo) {
+            dadosJogo.status = true
+            dadosJogo.status_code = 200
+            dadosJogo.game = resultJogo
+
+            return dadosJogo  //200
+        } else {
+            return MESSAGE.ERROR_NOT_FOUND //404
+        }
+
+    } catch (error) {
+        return MESSAGE.ERROR_INTERNAL_SERVER_CONTROLLER //500
     }
 }
 

@@ -20,9 +20,15 @@ const ERROR_CONTENT_TYPE                 = {status: false, status_code: 415, mes
 
 const ERROR_NOT_FOUND                    = {status: false, status_code: 404, message: 
     "Não foram encontrado itens para retornar!"}
+
+const ERROR_NOT_DELETE = {status: false, status_code: 400, message: 
+    "Não foram encontrado itens para retornar!"}
     
 /*******************MENSAGENS DE SUCESSO*******************/
-const SUCESS_CREATED_ITEM = {status: true, status_code: 201, message: "Item criado com sucesso."}
+const SUCESS_CREATED_ITEM = {status: true, status_code: 201, message: 
+    "Item criado com sucesso."}
+const SUCCESS_DELETED_ITEM = {status: true, status_code: 200, message: 
+    "Item excluido com sucesso."}
 
 
 module.exports = {
@@ -31,5 +37,7 @@ module.exports = {
     ERROR_INTERNAL_SERVER_MODEL,
     SUCESS_CREATED_ITEM,
     ERROR_CONTENT_TYPE,
-    ERROR_NOT_FOUND
+    ERROR_NOT_FOUND,
+    SUCCESS_DELETED_ITEM,
+    ERROR_NOT_DELETE
 }

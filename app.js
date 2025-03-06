@@ -66,6 +66,25 @@ app.get('/v1/controle-jogos/jogo', cors(), async function (request, response) {
         response.json(resultJogo)
 })
 
+
+app.get('/v1/controle-jogos/jogo/:id', cors(), async function (request, response) {
+        let idJogo = request.params.id
+    
+        let resultJogo = await controllerJogo.buscarJogo(idJogo)
+    
+        response.status(resultJogo.status_code)
+        response.json(resultJogo)
+    })
+
+app.delete('/v1/controle-jogos/jogo/delete/:id', cors(), async function (request, response) {
+        let id = request.params.id 
+      
+        let resultJogo = await controllerJogo.excluirJogo(id)
+      
+        response.status(resultJogo.status_code)
+        response.json(resultJogo)
+      })
+      
 app.listen(8080, function(){
         console.log('API aguardando requisições...')
 })
