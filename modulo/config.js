@@ -21,13 +21,14 @@ const ERROR_CONTENT_TYPE                 = {status: false, status_code: 415, mes
 const ERROR_NOT_FOUND                    = {status: false, status_code: 404, message: 
     "Não foram encontrado itens para retornar!"}
 
-const ERROR_NOT_DELETE = {status: false, status_code: 400, message: 
-    "Não foram encontrado itens para retornar!"}
+const ERROR_NOT_DELETE                   = {status: false, status_code: 400, message: 
+    "Não foi possível deletar!"}
     
 /*******************MENSAGENS DE SUCESSO*******************/
-const SUCESS_CREATED_ITEM = {status: true, status_code: 201, message: 
+const SUCESS_CREATED_ITEM               = {status: true, status_code: 201, message: 
     "Item criado com sucesso."}
-const SUCCESS_DELETED_ITEM = {status: true, status_code: 200, message: 
+
+const SUCCESS_DELETED_ITEM              = {status: true, status_code: 200, message: 
     "Item excluido com sucesso."}
 
 
