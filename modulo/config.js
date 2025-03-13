@@ -31,6 +31,9 @@ const SUCESS_CREATED_ITEM               = {status: true, status_code: 201, messa
 const SUCCESS_DELETED_ITEM              = {status: true, status_code: 200, message: 
     "Item excluido com sucesso."}
 
+const SUCCESS_UPDATE_ITEM              = {status: true, status_code: 200, message: 
+    "Item atualizado com sucesso."} 
+
 
 module.exports = {
     ERROR_REQUIRED_FILES,
@@ -40,5 +43,6 @@ module.exports = {
     ERROR_CONTENT_TYPE,
     ERROR_NOT_FOUND,
     SUCCESS_DELETED_ITEM,
-    ERROR_NOT_DELETE
+    ERROR_NOT_DELETE,
+    SUCCESS_UPDATE_ITEM
 }

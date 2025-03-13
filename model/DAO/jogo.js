@@ -46,8 +46,26 @@ const insertJogo = async function(jogo){
 }
 
 //Função para atualizar no banco de dados um jogo existente 
-const updateJogo = async function(){
+const updateJogo = async function(jogo){
+  try{
+    let sql = `update tbl_jogo set    nome            = '${jogo.nome}',
+                                      data_lancamento = '${jogo.data_lancamento}',
+                                      versao          = '${jogo.versao}',
+                                      tamanho         = '${jogo.tamanho}',
+                                      descricao       = '${jogo.descricao}',
+                                      foto_capa       = '${jogo.foto_capa}',
+                                      link            = '${jogo.link}'
+                                      where id        = '${jogo.id}'`
 
+      let result = await prisma.$executeRawUnsafe(sql)
+    
+      if(result)
+        return true
+      else 
+        return false
+  }catch (error) {
+    return false 
+  }
 }
 
 //Função para excluir no banco de dados um jogo existente
