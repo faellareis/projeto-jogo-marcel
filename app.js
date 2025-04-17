@@ -57,6 +57,7 @@ app.post('/v1/controle-jogos/jogo', cors(), bodyParserJSON, async function(reque
         response.status(resultJogo.status_code)
         response.json(resultJogo)
 })
+
 //EndPoint para retornar uma lista de jogos
 app.get('/v1/controle-jogos/jogo', cors(), async function (request, response) {
         //Chama a função para listar os jogos 
@@ -66,7 +67,7 @@ app.get('/v1/controle-jogos/jogo', cors(), async function (request, response) {
         response.json(resultJogo)
 })
 
-
+//EndPoint para buscar jogos
 app.get('/v1/controle-jogos/jogo/:id', cors(), async function (request, response) {
         let idJogo = request.params.id
     
@@ -102,6 +103,107 @@ app.put('/v1/controle-jogos/jogo/:id', cors(), bodyParserJSON, async function(re
 
         
 })      
+
+/**************************************************************************/
+
+const controllerGenero = require('./controller/genero/controllerGenero.js')
+
+//Inserir
+app.post('/v1/controle-generos/genero', cors(), bodyParserJSON, async function(request, response){
+
+        let contentType = request.headers['content-type']
+    
+        let dadosBody = request.body
+    
+        let resultGenero = await controllerGenero.inserirGenero(dadosBody, contentType)
+    
+        response.status(resultGenero.status_code)
+        response.json(resultGenero)
+    })
+    
+
+//Listar
+app.get('/v1/controle-generos/genero', cors(), async function (request, response) {
+        let resultGenero = await controllerGenero.listarGenero()
+    
+        response.status(resultGenero.status_code)
+        response.json(resultGenero)
+    })
+          
+//Buscar
+app.get('/v1/controle-generos/genero/:id', cors(), async function (request, response) {
+        let idGenero = request.params.id
+    
+        let resultGenero = await controllerGenero.buscarGenero(idGenero)
+    
+        response.status(resultGenero.status_code)
+        response.json(resultGenero)
+    })
+
+//Delete
+app.delete('/v1/controle-generos/genero/delete/:id', cors(), async function (request, response) {
+        let id = request.params.id 
+      
+        let resultGenero = await controllerGenero.excluirGenero(id)
+      
+        response.status(resultGenero.status_code)
+        response.json(resultGenero)
+      })
+
+//Atualizar
+app.put('/v1/controle-generos/genero/:id', cors(), bodyParserJSON, async function(request, response){
+
+        //Recebe o content-type da requisição
+        let contentType = request.headers['content-type']
+        //Recebe o id do jogo 
+        let idGenero = request.params.id 
+
+        //Recebe os dados do jogo encaminhando no body da requisição
+        let dadosBody = request.body
+
+        let resultGenero = await controllerGenero.atualizarGenero(dadosBody, idGenero, contentType)
+
+        response.status(resultGenero.status_code)
+        response.json(resultGenero)
+})      
+
+/**************************************************************************/
+
+const controllerSexo = require('./controller/sexo/controllerSexo.js')
+
+//Inserir
+app.post('/v1/controle-sexos/sexo', cors(), bodyParserJSON, async function(request, response){
+
+        let contentType = request.headers['content-type']
+    
+        let dadosBody = request.body
+    
+        let resultSexo = await controllerSexo.inserirSexo(dadosBody, contentType)
+    
+        response.status(resultSexo.status_code)
+        response.json(resultSexo)
+    })
+
+//Listar
+app.get('/v1/controle-sexos/sexo', cors(), async function (request, response) {
+        let resultSexo = await controllerSexo.listarSexo()
+    
+        response.status(resultSexo.status_code)
+        response.json(resultSexo)
+    })
+
+//Buscar
+app.get('/v1/controle-sexos/sexo/:id', cors(), async function (request, response) {
+        let idSexo = request.params.id
+    
+        let resultSexo = await controllerSexo.buscarSexo(idSexo)
+    
+        response.status(resultSexo.status_code)
+        response.json(resultSexo)
+    })
+
+/**************************************************************************/
+
 app.listen(8080, function(){
         console.log('API aguardando requisições...')
 })
