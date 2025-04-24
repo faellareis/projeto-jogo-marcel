@@ -37,8 +37,8 @@ const insertSexo = async function(sexo){
 
 const updateSexo = async function(sexo){
   try{
-    let sql = `update tbl_sexo set    nome            = '${sexo.nome}',
-                                      sigla           = '${sexo.sigla}',`
+    let sql = `update tbl_sexo          set    nome               = '${sexo.nome}',
+                                        sigla                     = '${sexo.sigla}'`
 
       let result = await prisma.$executeRawUnsafe(sql)
     
@@ -54,7 +54,7 @@ const updateSexo = async function(sexo){
 const deleteSexo = async function(idSexo) {
   try {
     //Deleta pelo ID
-    let sql = `DELETE FROM tbl_sexo WHERE id = ${idSexo}`
+    let sql = `DELETE FROM tbl_sexo WHERE id_sexo = ${idSexo}`
     let result = await prisma.$executeRawUnsafe(sql)
 
     if (result)
@@ -92,29 +92,22 @@ const selectAllSexo = async function() {
 
 const selectByIdSexo = async function(id) {
   try {
-    // Altere o nome da coluna para o correto, se necessário
-    let sql = `SELECT * FROM tbl_sexo WHERE sexo_id = ${id}`;  // Supondo que a coluna correta seja 'sexo_id'
+    //Busca apenas pelo ID
+    let sql = `SELECT * FROM tbl_sexo WHERE id_sexo = ${id}` 
 
-    console.log("Executando consulta SQL:", sql);  // Log para verificar a consulta
+    //Executa o Script SQL e aguarda o retorno dos dados
+    let result = await prisma.$queryRawUnsafe(sql)
 
-    // Executa a consulta SQL
-    let result = await prisma.$queryRawUnsafe(sql);
+    //Confere se encontrou algo
+    if (result.length > 0)
+      return result
+    else 
+      return false 
 
-    console.log("Resultado da consulta SQL:", result);  // Log para verificar o resultado da consulta
-
-    if (result && result.length > 0) {
-      return result;
-    } else {
-      console.log(`Nenhum registro encontrado para o ID ${id}`);  // Log se não encontrar nenhum registro
-      return false;
-    }
   } catch (error) {
-    console.error("Erro ao executar a consulta SQL:", error);  // Log de erro se falhar
-    return false;
+    return false
   }
-};
-
-
+}
 
 module.exports = {
   insertSexo,

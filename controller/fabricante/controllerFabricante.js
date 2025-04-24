@@ -11,18 +11,18 @@ const MESSAGE = require('../../modulo/config.js')
 //Import do DAO para realizar o CRUD no BD
 const fabricanteDAO = require('../../model/DAO/fabricante.js')
 
-//Função para inserir um novo jogo
+//Função para inserir um novo fabricante
 const inserirFabricante = async function(fabricante, contentType){
     try {
 
         if(contentType == 'application/json'){
         if
-        (fabricante.data_fundacao          == undefined   || fabricante.data_fundacao            == ''   ||  fabricante.data_fundacao            == null     
+        (fabricante.nome_fabricante           == undefined   || fabricante.nome_fabricante            == ''   ||  fabricante.nome_fabricante            == null     || fabricante.nome_fabricante.length            > 45 
         ){
             return MESSAGE.ERROR_REQUIRED_FILES //400
         }else{
             //Encaminha os dados do novo jogo para ser inserido no BD
-            let resultFabricante = await fabricanteDAO.inserirFabricante(fabricante)
+            let resultFabricante = await fabricanteDAO.insertFabricante(fabricante)
 
             if(resultFabricante)
                 return MESSAGE.SUCESS_CREATED_ITEM //201
@@ -43,7 +43,7 @@ const atualizarFabricante = async function(fabricante, id, contentType){
 
         if(contentType == 'application/json'){
             if
-        (fabricante.data_fundacao          == undefined   || fabricante.data_fundacao            == ''   ||  fabricante.data_fundacao            == null     
+        (fabricante.nome_fabricante          == undefined   || fabricante.nome_fabricante            == ''   ||  fabricante.nome_fabricante            == null     || fabricante.nome_fabricante.length          > 45 
         ){
                 return MESSAGE.ERROR_REQUIRED_FILES //400
             }else{

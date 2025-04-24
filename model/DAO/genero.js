@@ -29,7 +29,7 @@ const insertGenero = async function(genero){
       else 
         return false 
   } catch (error){
-    //console.log(error)
+    console.log(error)
     return false
   }                                  
 }

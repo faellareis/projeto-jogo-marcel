@@ -14,11 +14,11 @@ const prisma = new PrismaClient()
 const insertDesenvolvedoras = async function(desenvolvedoras){
   try {
 
-      let sql = `insert into tbl_desenvolvedoras(
-                                      data_lancamento
-                                      ) values (
-                                      '${desenvolvedoras.data_lancamento}'
-                                      )`
+    let sql = `insert into tbl_desenvolvedoras(
+      data_fundacao
+    ) values (
+      '${desenvolvedoras.data_fundacao}'
+    )`
       //Executa o script SQL no BD e Aguarda o retorno do BD                                
       let result = await prisma.$executeRawUnsafe(sql)
 
@@ -33,73 +33,67 @@ const insertDesenvolvedoras = async function(desenvolvedoras){
 }
  
 const updateDesenvolvedoras = async function(desenvolvedoras){
-  try{
-    let sql = `update tbl_desenvolvedoras set    
-                                      data_lancamento = '${desenvolvedoras.data_lancamento}'`
+  try {
+    let sql = `UPDATE tbl_desenvolvedoras 
+               SET data_fundacao = '${desenvolvedoras.data_fundacao}'
+               WHERE id_desenvolvedoras = ${desenvolvedoras.id_desenvolvedoras}`
 
-      let result = await prisma.$executeRawUnsafe(sql)
-    
-      if(result)
-        return true
-      else 
-        return false
-  }catch (error) {
+    let result = await prisma.$executeRawUnsafe(sql)
+
+    return result ? true : false
+
+  } catch (error) {
+    console.error("Erro ao atualizar desenvolvedora no DAO:", error)
     return false 
   }
 }
 
-const deleteDesenvolvedoras = async function(idDesenvolvedoras) {
+
+const deleteDesenvolvedoras = async function(id) {
   try {
-    //Deleta pelo ID
-    let sql = `DELETE FROM tbl_desenvolvedoras WHERE id = ${idDesenvolvedoras}`
-    let result = await prisma.$executeRawUnsafe(sql)
+    let sql = `DELETE FROM tbl_desenvolvedoras WHERE id_desenvolvedoras = ${id}`;
+    let result = await prisma.$executeRawUnsafe(sql);
 
-    if (result)
-      return true 
-    else
-      return false 
-    
+    return result ? true : false;
   } catch (error) {
-    return false
+    console.error('Erro ao deletar:', error);
+    return false;
   }
 }
 
-const selectAllDesenvolvedoras = async function(){
-  try{
-    //Script SQL para retornar os dados do BD
-    let sql = 'select * from tbl_desenvolvedoras order by id desc'
 
-    //Executa o Script SQL e aguarda o retorno dos dados
-    let result = await prisma.$queryRawUnsafe(sql)
-
-    if(result)
+const selectAllDesenvolvedoras = async function () {
+  try {
+      let sql = `SELECT * FROM tbl_desenvolvedoras`
+      let result = await prisma.$queryRawUnsafe(sql)
       return result
-    else 
-      return false
-
   } catch (error) {
-      return false 
+      console.error('Erro no DAO:', error)
+      return false
   }
 }
+
 
 const selectByIDdesenvolvedoras = async function(id) {
   try {
-    //Busca apenas pelo ID
-    let sql = `SELECT * FROM tbl_desenvolvedoras WHERE id = ${id}` 
+    let sql = `SELECT * FROM tbl_desenvolvedoras WHERE id_desenvolvedoras = ${id}`
 
-    //Executa o Script SQL e aguarda o retorno dos dados
     let result = await prisma.$queryRawUnsafe(sql)
 
-    //Confere se encontrou algo
-    if (result.length > 0)
+    console.log('Resultado da consulta:', result);
+
+    if (result.length > 0) {
       return result
-    else 
-      return false 
+    } else {
+      return []
+    }
 
   } catch (error) {
-    return false
+    console.error("Erro ao buscar desenvolvedora no DAO:", error)
+    return []
   }
 }
+
 
 module.exports = {
   insertDesenvolvedoras,

@@ -15,9 +15,9 @@ const insertFabricante = async function(fabricante){
   try {
 
       let sql = `insert into tbl_fabricante(
-                                      data_lancamento
+                                      nome_fabricante
                                       ) values (
-                                      '${fabricante.data_lancamento}'
+                                      '${fabricante.nome_fabricante}'
                                       )`
       //Executa o script SQL no BD e Aguarda o retorno do BD                                
       let result = await prisma.$executeRawUnsafe(sql)
@@ -35,7 +35,7 @@ const insertFabricante = async function(fabricante){
 const updateFabricante = async function(fabricante){
   try{
     let sql = `update tbl_fabricante set    
-                                      data_lancamento = '${fabricante.data_lancamento}'`
+                                      nome_fabricante = '${fabricante.nome_fabricante}'`
 
       let result = await prisma.$executeRawUnsafe(sql)
     
@@ -51,7 +51,7 @@ const updateFabricante = async function(fabricante){
 const deleteFabricante = async function(idFabricante) {
   try {
     //Deleta pelo ID
-    let sql = `DELETE FROM tbl_fabricante WHERE id = ${idFabricante}`
+    let sql = `DELETE FROM tbl_fabricante WHERE id_fabricante = ${idFabricante}`
     let result = await prisma.$executeRawUnsafe(sql)
 
     if (result)
@@ -67,7 +67,7 @@ const deleteFabricante = async function(idFabricante) {
 const selectAllFabricante = async function(){
   try{
     //Script SQL para retornar os dados do BD
-    let sql = 'select * from tbl_fabricante order by id desc'
+    let sql = 'select * from tbl_fabricante order by id_fabricante desc'
 
     //Executa o Script SQL e aguarda o retorno dos dados
     let result = await prisma.$queryRawUnsafe(sql)
@@ -85,7 +85,7 @@ const selectAllFabricante = async function(){
 const selectByIDFabricante = async function(id) {
   try {
     //Busca apenas pelo ID
-    let sql = `SELECT * FROM tbl_fabricante WHERE id = ${id}` 
+    let sql = `SELECT * FROM tbl_fabricante WHERE id_fabricante = ${id}` 
 
     //Executa o Script SQL e aguarda o retorno dos dados
     let result = await prisma.$queryRawUnsafe(sql)

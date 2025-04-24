@@ -16,13 +16,17 @@ const inserirDesenvolvedoras = async function(desenvolvedoras, contentType){
     try {
 
         if(contentType == 'application/json'){
-        if
-        (desenvolvedoras.data_fundacao          == undefined   || desenvolvedoras.data_fundacao            == ''   ||  desenvolvedoras.data_fundacao            == null     
-        ){
-            return MESSAGE.ERROR_REQUIRED_FILES //400
-        }else{
+            if (
+                desenvolvedoras.data_fundacao == undefined ||
+                desenvolvedoras.data_fundacao == '' ||
+                desenvolvedoras.data_fundacao == null ||
+                desenvolvedoras.data_fundacao.length > 10
+              ) {
+                return MESSAGE.ERROR_REQUIRED_FILES; // 400
+              }
+              else{
             //Encaminha os dados do novo jogo para ser inserido no BD
-            let resultDesenvolvedoras = await desenvolvedorasDAO.inserirDesenvolvedoras(desenvolvedoras)
+            let resultDesenvolvedoras = await desenvolvedorasDAO.insertDesenvolvedoras(desenvolvedoras)
 
             if(resultDesenvolvedoras)
                 return MESSAGE.SUCESS_CREATED_ITEM //201
@@ -37,44 +41,45 @@ const inserirDesenvolvedoras = async function(desenvolvedoras, contentType){
     }
 }
 
+
 //Função para atualizar um jogo
 const atualizarDesenvolvedoras = async function(desenvolvedoras, id, contentType){
-    try{
-
-        if(contentType == 'application/json'){
-            if
-        (desenvolvedoras.data_fundacao          == undefined   || desenvolvedoras.data_fundacao            == ''   ||  desenvolvedoras.data_fundacao            == null     
-        ){
+    try {
+        if (contentType == 'application/json') {
+            if (
+                desenvolvedoras.data_fundacao == undefined ||
+                desenvolvedoras.data_fundacao == '' ||
+                desenvolvedoras.data_fundacao == null
+            ) {
                 return MESSAGE.ERROR_REQUIRED_FILES //400
-            }else{
-                //Validar se o id existe no BD
-                let resultJogo = await buscarDesenvolvedoras(parseInt(id))
+            } else {
+                let resultDesenvolvedoras = await buscarDesenvolvedoras(parseInt(id))
 
-                if(resultJogo.status_code == 200){
-                    //Update
-                    //Adiciona um atributo id no JSON para encaminhar id da requisição
-                    desenvolvedoras.id = parseInt(id)
+                if (resultDesenvolvedoras.status_code == 200) {
+                    desenvolvedoras.id_desenvolvedoras = parseInt(id)
                     let result = await desenvolvedorasDAO.updateDesenvolvedoras(desenvolvedoras)
 
-                    if(result){
+                    if (result) {
                         return MESSAGE.SUCCESS_UPDATE_ITEM //200
-                    }else{
+                    } else {
                         return MESSAGE.ERROR_INTERNAL_SERVER_MODEL //500
                     }
 
-                }else if(resultDesenvolvedoras.status_code == 404){
+                } else if (resultDesenvolvedoras.status_code == 404) {
                     return MESSAGE.ERROR_NOT_FOUND //404
-                }else{
+                } else {
                     return MESSAGE.ERROR_INTERNAL_SERVER_CONTROLLER //500
                 }
             }
-        }else{
+        } else {
             return MESSAGE.ERROR_CONTENT_TYPE //415
         }
-    }catch (error) {
+    } catch (error) {
+        console.error("Erro na controller de atualização:", error)
         return MESSAGE.ERROR_INTERNAL_SERVER_CONTROLLER //500
     }
 }
+
 
 //Função para excluir um jogo
 const excluirDesenvolvedoras = async function(id) {
@@ -85,7 +90,7 @@ const excluirDesenvolvedoras = async function(id) {
         return MESSAGE.ERROR_REQUIRED_FILES // 400 
       }
       if(id){
-        let verificar = await desenvolvedorasDAO.selectByIdDesenvolvedoras(id)
+        let verificar = await desenvolvedorasDAO.selectByIDdesenvolvedoras(id)
         let resultDesenvolvedoras = await desenvolvedorasDAO.deleteDesenvolvedoras(id)
 
         if(verificar != false || typeof(verificar) == 'object'){
@@ -108,60 +113,64 @@ const excluirDesenvolvedoras = async function(id) {
 }
 
 //Função para retornar todos os jogos
-const listarDesenvolvedoras = async function(){
-    try{
-        let dadosDesenvolvedoras = {}
+const listarDesenvolvedoras = async function () {
+    try {
+        let dados = await desenvolvedorasDAO.selectAllDesenvolvedoras()
 
-    //Chamo a função para retornar os dados do jogo
-        let resultDesenvolvedoras = await desenvolvedorasDAO.selectAllDesenvolvedoras()
-
-        if(resultDesenvolvedoras != false || typeof(resultDesenvolvedoras) == 'object'){
-        if(resultDesenvolvedoras.length > 0){
-
-            //Cria um objeto do tipo JSON para retornar a lista de jogos 
-            dadosDesenvolvedoras.status = true
-            dadosDesenvolvedoras.status_code = 200
-            dadosDesenvolvedoras.items = resultDesenvolvedoras.length
-            dadosDesenvolvedoras.games = resultDesenvolvedoras
-
-            return dadosDesenvolvedoras//200
-        }else {
-            return MESSAGE.ERROR_NOT_FOUND //404
+        if (dados && Array.isArray(dados) && dados.length > 0) {
+            return {
+                status: true,
+                status_code: 200,
+                data: dados
+            }
+        } else {
+            return {
+                status: false,
+                status_code: 404,
+                message: 'Nenhuma desenvolvedora encontrada.'
+            }
         }
-    }else{
-        return MESSAGE.ERROR_INTERNAL_SERVER_MODEL //500
-    }
     } catch (error) {
-        return MESSAGE.ERROR_INTERNAL_SERVER_CONTROLLER //500
-    }    
+        console.error('Erro na controller:', error)
+        return {
+            status: false,
+            status_code: 500,
+            message: 'Erro interno ao buscar desenvolvedoras.'
+        }
+    }
 }
 
 //Função para buscar um jogo
-const buscarDesenvolvedoras = async function(id) { //recebe ID
+const buscarDesenvolvedoras = async function(id) {
     try {
         let dadosDesenvolvedoras = {}
 
-        //verifica se o ID foi passado correto
+        // Verifica se o ID foi passado corretamente
         if (id == undefined || id == '' || isNaN(id)) {
             return MESSAGE.ERROR_REQUIRED_FILES //400
         }
 
-        let resultDesenvolvedoras = await desenvolvedorasDAO.selectByIdDesenvolvedoras(id)
+        let resultDesenvolvedoras = await desenvolvedorasDAO.selectByIDdesenvolvedoras(id)
 
-        if (resultDesenvolvedoras) {
+        // Log para ver o que foi retornado pela função DAO
+        console.log("Resultado da busca por ID:", resultDesenvolvedoras)
+
+        if (resultDesenvolvedoras && resultDesenvolvedoras.length > 0) {
             dadosDesenvolvedoras.status = true
             dadosDesenvolvedoras.status_code = 200
             dadosDesenvolvedoras.game = resultDesenvolvedoras
-
-            return dadosDesenvolvedoras  //200
+            return dadosDesenvolvedoras //200
         } else {
             return MESSAGE.ERROR_NOT_FOUND //404
         }
 
     } catch (error) {
+        console.error("Erro ao buscar desenvolvedora:", error) // Log do erro
         return MESSAGE.ERROR_INTERNAL_SERVER_CONTROLLER //500
     }
 }
+
+
 
 module.exports = {
     inserirDesenvolvedoras,

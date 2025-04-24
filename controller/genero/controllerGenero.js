@@ -11,19 +11,20 @@ const MESSAGE = require('../../modulo/config.js')
 //Import do DAO para realizar o CRUD no BD
 const generoDAO = require('../../model/DAO/genero.js')
 
-//Função para inserir um novo jogo
+//Função para inserir um novo genero
 const inserirGenero = async function(genero, contentType){
     try {
 
         if(contentType == 'application/json'){
         if
-        (genero.nome               == undefined   || genero.nome                 == ''   ||  genero.nome                == null     ||
-         genero.descricao          == undefined   || genero.descricao            == ''   ||  genero.descricao           == null  
+        (genero.nome_genero              == undefined   || genero.nome_genero                 == ''   ||  genero.nome_genero                == null     ||  genero.nome_genero .length          > 45 ||
+         genero.descricao_genero         == undefined   || genero.descricao_genero            == ''   ||  genero.descricao_genero           == null   
         ){
+            console.log(genero)
             return MESSAGE.ERROR_REQUIRED_FILES //400
         }else{
             //Encaminha os dados do novo jogo para ser inserido no BD
-            let resultGenero = await generoDAO.inserirGenero(genero)
+            let resultGenero = await generoDAO.insertGenero(genero)
 
             if(resultGenero)
                 return MESSAGE.SUCESS_CREATED_ITEM //201
@@ -38,7 +39,7 @@ const inserirGenero = async function(genero, contentType){
     }
 }
 
-//Função para atualizar um jogo
+//Função para atualizar um genero
 const atualizarGenero = async function(genero, id, contentType){
     try{
 
@@ -78,7 +79,7 @@ const atualizarGenero = async function(genero, id, contentType){
     }
 }
 
-//Função para excluir um jogo
+//Função para excluir um genero
 const excluirGenero = async function(id) {
     try {
   
@@ -133,7 +134,7 @@ const listarGenero = async function() {
   }
   
 
-//Função para buscar um jogo
+//Função para buscar um genero
 const buscarGenero = async function(id) { //recebe ID
     try {
         let dadosGenero = {}

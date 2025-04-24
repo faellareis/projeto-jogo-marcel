@@ -11,7 +11,7 @@ const MESSAGE = require('../../modulo/config.js')
 //Import do DAO para realizar o CRUD no BD
 const sexoDAO = require('../../model/DAO/sexo.js')
 
-//Função para inserir um novo jogo
+//Função para inserir um novo sexo
 const inserirSexo = async function(sexo, contentType){
     try {
 
@@ -145,28 +145,24 @@ const buscarSexo = async function(id) { //recebe ID
     try {
         let dadosSexo = {}
 
-        //verifica se o ID foi passado corretamente
+        //verifica se o ID foi passado correto
         if (id == undefined || id == '' || isNaN(id)) {
             return MESSAGE.ERROR_REQUIRED_FILES //400
         }
 
-        console.log(`Buscando sexo com ID: ${id}`);  // Log para verificar o ID
-
         let resultSexo = await sexoDAO.selectByIdSexo(id)
 
-        if (resultSexo && resultSexo.length > 0) {
+        if (resultSexo) {
             dadosSexo.status = true
             dadosSexo.status_code = 200
             dadosSexo.game = resultSexo
 
             return dadosSexo  //200
         } else {
-            console.log(`Nenhum sexo encontrado com o ID: ${id}`);  // Log para verificar se não encontrou
             return MESSAGE.ERROR_NOT_FOUND //404
         }
 
     } catch (error) {
-        console.error("Erro ao buscar sexo:", error);  // Log para depuração
         return MESSAGE.ERROR_INTERNAL_SERVER_CONTROLLER //500
     }
 }

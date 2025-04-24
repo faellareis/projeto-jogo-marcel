@@ -202,8 +202,158 @@ app.get('/v1/controle-sexos/sexo/:id', cors(), async function (request, response
         response.json(resultSexo)
     })
 
+//Atualizar
+app.put('/v1/controle-sexos/sexo/:id', cors(), bodyParserJSON, async function(request, response){
+
+        //Recebe o content-type da requisição
+        let contentType = request.headers['content-type']
+        //Recebe o id do jogo 
+        let idSexo = request.params.id 
+
+        //Recebe os dados do jogo encaminhando no body da requisição
+        let dadosBody = request.body
+
+        let resultSexo = await controllerSexo.atualizarSexo(dadosBody, idSexo, contentType)
+
+        response.status(resultSexo.status_code)
+        response.json(resultSexo)
+}) 
+
+//Delete
+app.delete('/v1/controle-sexos/sexo/delete/:id', cors(), async function (request, response) {
+        let id = request.params.id 
+      
+        let resultSexo = await controllerSexo.excluirSexo(id)
+      
+        response.status(resultSexo.status_code)
+        response.json(resultSexo)
+      })
+
 /**************************************************************************/
 
+const controllerDesenvolvedoras = require('./controller/desenvolvedoras/controllerDesenvolvedoras.js')
+
+//Inserir
+app.post('/v1/controle-desenvolvedoras/desenvolvedora', cors(), bodyParserJSON, async function(request, response){
+
+        let contentType = request.headers['content-type']
+    
+        let dadosBody = request.body
+    
+        let resultDesenvolvedoras = await controllerDesenvolvedoras.inserirDesenvolvedoras(dadosBody, contentType)
+    
+        response.status(resultDesenvolvedoras.status_code)
+        response.json(resultDesenvolvedoras)
+    })
+
+//Listar
+app.get('/v1/controle-desenvolvedoras/desenvolvedora', cors(), async function (request, response) {
+        let resultDesenvolvedoras = await controllerDesenvolvedoras.listarDesenvolvedoras()
+    
+        response.status(resultDesenvolvedoras.status_code)
+        response.json(resultDesenvolvedoras)
+})
+
+//Buscar
+app.get('/v1/controle-desenvolvedoras/desenvolvedora/:id', cors(), async function (request, response) {
+        let idDesenvolvedoras = request.params.id
+    
+        let resultDesenvolvedoras = await controllerDesenvolvedoras.buscarDesenvolvedoras(idDesenvolvedoras)
+    
+        response.status(resultDesenvolvedoras.status_code)
+        response.json(resultDesenvolvedoras)
+    })
+
+//Atualizar
+app.put('/v1/controle-desenvolvedoras/desenvolvedora/:id', cors(), bodyParserJSON, async function(request, response){
+
+        //Recebe o content-type da requisição
+        let contentType = request.headers['content-type']
+        //Recebe o id do jogo 
+        let idDesenvolvedoras = request.params.id 
+
+        //Recebe os dados do jogo encaminhando no body da requisição
+        let dadosBody = request.body
+
+        let resultDesenvolvedoras = await controllerDesenvolvedoras.atualizarDesenvolvedoras(dadosBody, idDesenvolvedoras, contentType)
+
+        response.status(resultDesenvolvedoras.status_code)
+        response.json(resultDesenvolvedoras)
+}) 
+
+//Delete
+app.delete('/v1/controle-desenvolvedoras/desenvolvedora/:id', cors(), async function (request, response) {
+        let id = request.params.id;
+    
+        let result = await controllerDesenvolvedoras.excluirDesenvolvedoras(id);
+    
+        response.status(result.status_code);
+        response.json(result);
+    });
+    
+/**************************************************************************/
+
+const controllerFabricante = require('./controller/fabricante/controllerFabricante.js')
+
+//Inserir
+app.post('/v1/controle-fabricantes/fabricante', cors(), bodyParserJSON, async function(request, response){
+
+        let contentType = request.headers['content-type']
+    
+        let dadosBody = request.body
+    
+        let resultFabricante = await controllerFabricante.inserirFabricante(dadosBody, contentType)
+    
+        response.status(resultFabricante.status_code)
+        response.json(resultFabricante)
+    })
+
+//Listar
+app.get('/v1/controle-fabricantes/fabricante', cors(), async function (request, response) {
+        let resultFabricante = await controllerFabricante.listarFabricante()
+    
+        response.status(resultFabricante.status_code)
+        response.json(resultFabricante)
+})    
+
+//Buscar
+app.get('/v1/controle-fabricantes/fabricante/:id', cors(), async function (request, response) {
+        let idFabricante = request.params.id
+    
+        let resultFabricante = await controllerFabricante.buscarFabricante(idFabricante)
+    
+        response.status(resultFabricante.status_code)
+        response.json(resultFabricante)
+    })
+
+
+//Atualizar
+app.put('/v1/controle-fabricantes/fabricante/:id', cors(), bodyParserJSON, async function(request, response){
+
+        //Recebe o content-type da requisição
+        let contentType = request.headers['content-type']
+        //Recebe o id do jogo 
+        let idFabricante = request.params.id 
+
+        //Recebe os dados do jogo encaminhando no body da requisição
+        let dadosBody = request.body
+
+        let resultFabricante = await controllerFabricante.atualizarFabricante(dadosBody, idFabricante, contentType)
+
+        response.status(resultFabricante.status_code)
+        response.json(resultFabricante)
+}) 
+
+//Delete
+app.delete('/v1/controle-fabricantes/fabricante/:id', cors(), async function (request, response) {
+        let id = request.params.id;
+    
+        let result = await controllerFabricante.excluirFabricante(id);
+    
+        response.status(result.status_code);
+        response.json(result);
+    });
+/**************************************************************************/
 app.listen(8080, function(){
         console.log('API aguardando requisições...')
 })
