@@ -42,8 +42,8 @@ const insertJogoPublicoAlvo = async function(JogoPublicoAlvo){
 //Função para atualizar um FilmeGenero existente
 const updateJogoPublicoAlvo = async function(JogoPublicoAlvo){
   try {
-      let sql = `update tbl_filme_genero set        id_publico_alvo       = ${JogoPublicoAlvo.id_publico_alvo},
-                                                    id_jogo               = ${JogoPublicoAlvo.id_jogo}
+      let sql = `update tbl_jogo_publico_alvo set        id_publico_alvo       = ${JogoPublicoAlvo.id_publico_alvo},
+                                                         id_jogo               = ${JogoPublicoAlvo.id_jogo}
                                         
                             where id = ${JogoPublicoAlvo.id}                
                             `
